@@ -57,8 +57,17 @@ def getAllContacts(db: Session = Depends(db_instance.get_db)):
    return db.query(ContactoBd).all()
 
 @app.get("/contactos/{id}")
-def deleteContacto(id: int, db: Session = Depends(db_instance.get_db)):
+def getContactoPorId(id: int, db: Session = Depends(db_instance.get_db)):
     cto = db.get(ContactoBd, id)
+    if not cto:
+        raise HTTPException(400, detail="id no encontrado")
+    
+    return cto
+
+@app.get("/juanperez")
+def getContactoPorNombre(db: Session = Depends(db_instance.get_db)):
+    cto = db.query(ContactoBd).filter_by(nombre="juan perez").first()
+
     if not cto:
         raise HTTPException(400, detail="id no encontrado")
     
