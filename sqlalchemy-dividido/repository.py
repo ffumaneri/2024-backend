@@ -37,3 +37,8 @@ class ContactosRepo:
         db.add(contacto_db)
         db.commit()
 
+    def delete(self, id, db):
+        cto = self.getOne(id, db)
+        db.delete(cto)
+        db.commit()
+

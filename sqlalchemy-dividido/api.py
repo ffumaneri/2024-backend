@@ -27,7 +27,7 @@ def getContactoPorId(id: int, db: Session = Depends(db_instance.get_db)):
     try:
         return repo.getOne(id, db)
     except NotFoundError as e:
-        raise HTTPException(e.status_code, e.message)
+        raise HTTPException(e.status_code, "id no encontrado")
 
 @app.get("/search/{nombre}")
 def getContactoPorNombre(nombre: str, db: Session = Depends(db_instance.get_db)):
@@ -52,9 +52,7 @@ def addContact(c: ContactoSinId, db: Session = Depends(db_instance.get_db)):
 @app.delete("/contactos/{id}")
 def deleteContacto(id: int, db: Session = Depends(db_instance.get_db)):
     try:
-        cto = repo.getOne(id, db)
-        db.delete(cto)
-        db.commit()
+        cto = repo.delete(id, db)
 
     except NotFoundError as e:
         raise HTTPException(e.status_code, "id no encontrado")
