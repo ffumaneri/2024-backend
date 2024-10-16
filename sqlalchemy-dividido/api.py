@@ -8,16 +8,29 @@ from db import db_instance
 from model import ContactoBd
 from repository import ContactosRepo, NotFoundError
 
+# Variable global que representa FastAPI
 app = FastAPI()
+
+# Referencia a repository
 repo = ContactosRepo()
+
+"""
+ContactoSinId
+Representa un contacto para FastAPI. No confundir con ContactoDb que es para la DB.
+"""
 class ContactoSinId(BaseModel): 
     nombre: str
     direccion: Optional[str]
     telefonos: Optional[str]
 
+"""
+Contacto
+Representa un contacto. Hereda de ContactoSinId y agrega el ID.
+"""
 class Contacto(ContactoSinId): 
     id: int
 
+# Endpoints
 @app.get("/contactos")
 def getAllContacts(db: Session = Depends(db_instance.get_db)):
    return repo.getAll(db)

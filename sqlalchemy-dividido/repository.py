@@ -1,4 +1,4 @@
-from model import ContactoBd
+from model import ContactoBd, DireccionDb
 
 """
 Indica que no se encontró un recurso solicitado.
@@ -16,7 +16,13 @@ class NotFoundError(Exception):
     
 class ContactosRepo:
     def getAll(self, db):
-        return db.query(ContactoBd).all()
+        filas = db.query(ContactoBd, DireccionDb).join(DireccionDb).all()
+        objetos = []
+        for fila in filas:
+            contacto, direccion = fila
+            objetos.append({"nombre": contacto.nombre, "telefonos": contacto.telefonos, "calle": direccion.calle, "numero": direccion.numero})
+
+        return objetos
     
     def getOne(self, id, db):
         cto = db.get(ContactoBd, id)
