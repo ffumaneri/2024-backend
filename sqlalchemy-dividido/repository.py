@@ -1,7 +1,10 @@
+"""
+repository.py
+"""
 from model import ContactoBd, DireccionDb
 
 """
-Indica que no se encontró un recurso solicitado.
+Clase que hereda de Exception. Indica que no se encontró un recurso solicitado.
 """
 class NotFoundError(Exception):
 
@@ -14,8 +17,14 @@ class NotFoundError(Exception):
         # Codigo de estado (solo lectura)
         return self._status_code
     
+"""
+Clase que hace las consultas necesarias a la base de datos.
+"""
 class ContactosRepo:
     def getAll(self, db):
+        # Este método devuelve un arreglo de Tuplas.
+        #[(ContactoDb, DireccionDb)]
+        # 
         filas = db.query(ContactoBd, DireccionDb).join(DireccionDb).all()
         objetos = []
         for fila in filas:
